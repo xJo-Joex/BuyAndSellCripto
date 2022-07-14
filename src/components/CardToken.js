@@ -48,7 +48,12 @@ const CardToken = (props) => {
 		if (deleteFavorite.value) {
 			setFavoriteTokens((tokens) => tokens.filter((tkn) => tkn !== token));
 		} else {
-			setFavoriteTokens((tokens) => [...tokens, token]);
+			setFavoriteTokens((tokens) => {
+				return [...tokens, token]
+				// if (tokens.length <=3) {
+					
+				// }
+			});
 		}
 	};
 	return (
@@ -57,7 +62,7 @@ const CardToken = (props) => {
 				<>
 					<h2>{token.selectOption.symbol.substring(0, 7)}</h2>
 					<H3>
-						Precio: <Span> {Number(token.price).toFixed(10)} TUSD</Span>
+						Precio: <Span> {Number(1 / token.price).toFixed(10)} DAI</Span>
 					</H3>
 					<Button onClick={handleFavorite}>{deleteFavorite.msg}</Button>
 				</>

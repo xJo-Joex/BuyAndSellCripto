@@ -4,15 +4,15 @@ import CardToken from "./CardToken";
 
 const FavoritesTokens = ({ favoritesTokens, setFavoriteTokens }) => {
 
-	useEffect(() => {
-		setTimeout(() => {
-			if (favoritesTokens > 0) {
-				favoritesTokens.map((token) =>
-					getTokenByAddress(token.selectOption.address).then((token) => console.log(token))
-				);
-			}
-		}, 3000);
-	});
+	// useEffect(() => {
+	// 	setTimeout(() => {
+	// 		if (favoritesTokens > 0) {
+	// 			favoritesTokens.map((token) =>
+	// 				getTokenByAddress(token.selectOption.address).then((token) => console.log(token))
+	// 			);
+	// 		}
+	// 	}, 3000);
+	// });
 	return (
 		<div>
 			{favoritesTokens?.map((token) => (
