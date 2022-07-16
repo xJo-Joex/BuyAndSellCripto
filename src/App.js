@@ -89,6 +89,7 @@ function App() {
 	}, [selectOption]);
 	const [favoritesTokens, setFavoriteTokens] = useState([]);
 
+
 	return (
 		<>
 			<Header>
@@ -103,12 +104,17 @@ function App() {
 					<CardToken
 						token={{ ...token, selectOption }}
 						setFavoriteTokens={setFavoriteTokens}
+						favoriteTokens={favoritesTokens}
 						deleteFavorite={{ value: false, msg: "Añadir a favorito" }}
 					/>
 				</SeLectionToken>
 				<Favoritos>
 					<Title>Favoritos</Title>
-					<FavoritesTokens favoritesTokens={favoritesTokens} setFavoriteTokens={setFavoriteTokens} />
+					<FavoritesTokens
+						favoritesTokens={favoritesTokens}
+						setFavoriteTokens={setFavoriteTokens}
+						// updateFavorites={updateFavorites}
+					/>
 				</Favoritos>
 			</MainContainer>
 		</>
