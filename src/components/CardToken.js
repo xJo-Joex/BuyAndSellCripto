@@ -25,7 +25,7 @@ const Card = styled.div`
 `;
 const Span = styled.span`
 	display: block;
-	padding:0.4rem;
+	padding: 0.4rem;
 	color: ${(props) => props.colorPrice};
 	font-size: 1.1rem;
 	@media (min-width: 580px) {
@@ -129,7 +129,7 @@ const CardToken = (props) => {
 	};
 
 	useEffect(() => {
-		if (isNaN(average)) return;
+		// if (isNaN(average)) return;
 		if (Object.keys(token).length > 0 && token?.lastPrices?.length === 5) {
 			// console.log(token)
 			setAverage(Number(token.lastPrices.reduce((a, b) => a + b)) / Number(token.lastPrices?.length));
@@ -148,27 +148,27 @@ const CardToken = (props) => {
 	}
 	return (
 		<Card>
-			{token.price ? (
+			{token.price && deleteFavorite.value ? (
 				<>
 					<h2>{token.selectOption.symbol.substring(0, 7)}</h2>
 					<H3>
 						Precio:{" "}
-						{deleteFavorite.value && !(Number(token.price) === Number(average)) ? (
+						{deleteFavorite.value /* && !(Number(token.price) === Number(average)) */ ? (
 							<>
-								<Span colorPrice={Number(token.price) >= Number(average) ? "#98ff96" : "#9c0720"}>
-									{Number(token.price).toFixed(15)}
+								<Span colorPrice={Number(token.price) <= Number(average) ? " #9c0720 " : "#98ff96"}>
+									{Number(token.price)}
 								</Span>
 								DAI
 							</>
 						) : (
 							<>
-								<Span colorPrice={"white"}> {Number(token.price).toFixed(15)} </Span>DAI
+								<Span colorPrice={"white"}> {Number(token.price)} </Span>DAI
 							</>
 						)}
 					</H3>
 					{deleteFavorite.value && (
 						<Promedio>
-							Promedio úitimas 5 lecturas: <SpanAvarage>${average.toFixed(15)}</SpanAvarage>{" "}
+							Promedio úitimas 5 lecturas: <SpanAvarage>${average}</SpanAvarage>{" "}
 						</Promedio>
 					)}
 					<Button

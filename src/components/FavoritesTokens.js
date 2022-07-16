@@ -29,6 +29,7 @@ const FavoritesTokens = ({ favoritesTokens, setFavoriteTokens,/*  updateFavorite
 					)
 				)
 			);
+			console.log(favoritesTokens)
 	}, [updateFavorites]);
 	return (
 		<div>

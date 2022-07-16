@@ -11,5 +11,6 @@ export const getTokenByAddress = async (address) => {
 	const res = await fetch(URI);
 
 	const { buyTokenAddress, price } = await res.json();
+	// console.log(res.json())
 	return { buyTokenAddress, price: (1/ Number(price)), lastPrices: [(1 / Number(price))] };
 };
