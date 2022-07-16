@@ -25,7 +25,15 @@ const Card = styled.div`
 `;
 const Span = styled.span`
 	display: block;
+	padding:0.4rem;
 	color: ${(props) => props.colorPrice};
+	font-size: 1.1rem;
+	@media (min-width: 580px) {
+		font-size: 1.3rem;
+	}
+	@media (min-width: 610px) {
+		font-size: 1.5rem;
+	}
 `;
 const H3 = styled.h3`
 	font-size: 2rem;
@@ -148,19 +156,19 @@ const CardToken = (props) => {
 						{deleteFavorite.value && !(Number(token.price) === Number(average)) ? (
 							<>
 								<Span colorPrice={Number(token.price) >= Number(average) ? "#98ff96" : "#9c0720"}>
-									{Number(token.price).toFixed(10)}
+									{Number(token.price).toFixed(15)}
 								</Span>
 								DAI
 							</>
 						) : (
 							<>
-								<Span colorPrice={"white"}> {Number(token.price).toFixed(10)} </Span>DAI
+								<Span colorPrice={"white"}> {Number(token.price).toFixed(15)} </Span>DAI
 							</>
 						)}
 					</H3>
 					{deleteFavorite.value && (
 						<Promedio>
-							Promedio úitimas 5 lecturas: <SpanAvarage>${average.toFixed(10)}</SpanAvarage>{" "}
+							Promedio úitimas 5 lecturas: <SpanAvarage>${average.toFixed(15)}</SpanAvarage>{" "}
 						</Promedio>
 					)}
 					<Button
