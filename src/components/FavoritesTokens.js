@@ -7,7 +7,7 @@ const FavoritesTokens = ({ favoritesTokens, setFavoriteTokens /*  updateFavorite
 	useEffect(() => {
 		setInterval(() => {
 			setUpdateFavorites((count) => count + 1);
-		}, 30000);
+		}, 35000);
 	}, []);
 	useEffect(() => {
 		favoritesTokens.length > 0 &&
