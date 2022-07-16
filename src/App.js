@@ -89,7 +89,6 @@ function App() {
 	}, [selectOption]);
 	const [favoritesTokens, setFavoriteTokens] = useState([]);
 
-
 	return (
 		<>
 			<Header>

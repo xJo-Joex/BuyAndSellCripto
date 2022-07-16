@@ -1,8 +1,8 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getTokenByAddress } from "../FetchApi/GetData";
 import CardToken from "./CardToken";
 
-const FavoritesTokens = ({ favoritesTokens, setFavoriteTokens,/*  updateFavorites */ }) => {
+const FavoritesTokens = ({ favoritesTokens, setFavoriteTokens /*  updateFavorites */ }) => {
 	const [updateFavorites, setUpdateFavorites] = useState(0);
 	useEffect(() => {
 		setInterval(() => {
@@ -29,7 +29,6 @@ const FavoritesTokens = ({ favoritesTokens, setFavoriteTokens,/*  updateFavorite
 					)
 				)
 			);
-			console.log(favoritesTokens)
 	}, [updateFavorites]);
 	return (
 		<div>

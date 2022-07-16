@@ -148,7 +148,7 @@ const CardToken = (props) => {
 	}
 	return (
 		<Card>
-			{token.price && deleteFavorite.value ? (
+			{token.price ? (
 				<>
 					<h2>{token.selectOption.symbol.substring(0, 7)}</h2>
 					<H3>
