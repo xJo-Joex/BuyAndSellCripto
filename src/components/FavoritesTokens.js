@@ -2,29 +2,26 @@ import React, { useEffect, useState } from "react";
 import { getTokenByAddress } from "../FetchApi/GetData";
 import CardToken from "./CardToken";
 
-const FavoritesTokens = ({ favoritesTokens, setFavoriteTokens /*  updateFavorites */ }) => {
-	const [updateFavorites, setUpdateFavorites] = useState(0);
-	useEffect(() => {
-		setInterval(() => {
-			setUpdateFavorites((count) => count + 1);
-		}, 35000);
-	}, []);
+const FavoritesTokens = ({ favoritesTokens, setFavoriteTokens,  updateFavorites }) => {
+
 	useEffect(() => {
 		favoritesTokens.length > 0 &&
 			favoritesTokens.map((token) =>
-				getTokenByAddress(token.buyTokenAddress).then((tokenUpdate) =>
+				getTokenByAddress(token.buyTokenAddress, token.symbol).then((tokenUpdate) =>
 					setFavoriteTokens((oldTokens) =>
-						oldTokens.map((oldTkn) =>
-							oldTkn.buyTokenAddress === tokenUpdate.buyTokenAddress
-								? {
-										...tokenUpdate,
-										selectOption: { ...oldTkn.selectOption },
-										lastPrices:
-											oldTkn.lastPrices?.length < 5
-												? [...oldTkn.lastPrices, tokenUpdate.price]
-												: [...oldTkn.lastPrices.slice(-4), tokenUpdate.price],
-								  }
-								: oldTkn
+						oldTokens.map((oldTkn) =>{
+							// console.log(tokenUpdate)
+							return oldTkn.selectOption.symbol === tokenUpdate.symbol
+							? {
+								...tokenUpdate,
+								selectOption: { ...oldTkn.selectOption },
+								lastPrices:
+								oldTkn.lastPrices?.length < 5
+								? [...oldTkn.lastPrices, tokenUpdate.price]
+								: [...oldTkn.lastPrices.slice(-4), tokenUpdate.price],
+							}
+							: oldTkn
+						}
 						)
 					)
 				)

@@ -83,12 +83,17 @@ function App() {
 	const [, SelectCripto, selectOption] = useTokens();
 	const [token, setToken] = useState({});
 	useEffect(() => {
-		if (selectOption.address !== "") {
-			getTokenByAddress(selectOption.address).then(setToken);
+		if (selectOption.address !== "" && selectOption.symbol !== "") {
+			getTokenByAddress(selectOption.address, selectOption.symbol).then(setToken);
 		}
 	}, [selectOption]);
 	const [favoritesTokens, setFavoriteTokens] = useState([]);
-
+	const [updateFavorites, setUpdateFavorites] = useState(0);
+	useEffect(() => {
+		setInterval(() => {
+			setUpdateFavorites((count) => count + 1);
+		}, 30000);
+	}, []);
 	return (
 		<>
 			<Header>
@@ -112,7 +117,7 @@ function App() {
 					<FavoritesTokens
 						favoritesTokens={favoritesTokens}
 						setFavoriteTokens={setFavoriteTokens}
-						// updateFavorites={updateFavorites}
+						updateFavorites={updateFavorites}
 					/>
 				</Favoritos>
 			</MainContainer>

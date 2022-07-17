@@ -46,7 +46,7 @@ const useTokens = () => {
 	const [selectOption, setSelectOption] = useState({ address: "", symbol: "" });
 	useEffect(() => {
 		getListTokens().then(setTokens);
-	}, []);
+	}, [selectOption]);
 	const SelectCripto = () => {
 		return (
 			<>
