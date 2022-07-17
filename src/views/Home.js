@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import { getTokenByAddress } from "../FetchApi/GetData";
 import CardToken from "../components/CardToken";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
 const SeLectionToken = styled.section`
 	display: flex;
 	width: 100%;
 	height: 100%;
-	margin: 0 auto;
+	margin: 1rem auto;
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: center;
@@ -17,32 +16,18 @@ const SeLectionToken = styled.section`
 	}
 `;
 
-const Home = ({
-	setFavoritesTokens,
-	favoritesTokens,
-	token,
-	setToken,
-	SelectCripto,
-	selectOption,
-}) => {
+const Home = ({ setFavoritesTokens, favoritesTokens, SelectCripto, selectOption }) => {
+	const [token, setToken] = useState({});
+
 	useEffect(() => {
 		if (selectOption.address !== "" && selectOption.symbol !== "") {
 			getTokenByAddress(selectOption.address, selectOption.symbol).then(setToken);
 		}
 	}, [selectOption]);
-	const [updateFavorites, setUpdateFavorites] = useState(0);
-	useEffect(() => {
-		setInterval(() => {
-			setUpdateFavorites((count) => count + 1);
-		}, 30000);
-	}, []);
 
 	return (
 		<>
-			<Link to="/favoritos" className="btn-borde">
-				Favoritos
-			</Link>
-			<SeLectionToken>
+			<SeLectionToken className="animate__animated animate__fadeIn animate__delay-1s ">
 				<SelectCripto />
 				<CardToken
 					token={{ ...token, selectOption }}

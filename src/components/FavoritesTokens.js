@@ -2,13 +2,18 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { getTokenByAddress } from "../FetchApi/GetData";
 import CardToken from "./CardToken";
-import { Link } from "react-router-dom";
 
 const ContainerFavorites = styled.section`
 	height: auto;
 	margin: 0 auto;
-	@media (min-width: 570px) {
-		width: 50%;
+	width: auto;
+	@media (min-width: 580px) {
+		display: flex;
+		justify-content: space-around;
+		flex-wrap: wrap;
+		flex-direction: row;
+		column-row: 4rem;
+		/* flex: 0 0 200px; */
 	}
 	/* background-color: white; */
 `;
@@ -34,19 +39,16 @@ const FavoritesTokens = ({ favoritesTokens, setFavoritesTokens, updateFavorites 
 					)
 				)
 			);
+		console.log(favoritesTokens);
 	}, [updateFavorites]);
 	return (
 		<>
-			'
-			<Link to="/" className="btn-borde">
-				Inicio
-			</Link>
-			<ContainerFavorites>
+			<ContainerFavorites className="animate__animated animate__fadeIn animate__delay-1s ">
 				{favoritesTokens.map((token, idx) => (
 					<CardToken
 						key={token.selectOption.symbol + idx}
 						token={token}
-						setFavoriteTokens={setFavoritesTokens}
+						setFavoritesTokens={setFavoritesTokens}
 						deleteFavorite={{ value: true, msg: "Eliminar favorito" }}
 					/>
 				))}

@@ -1,25 +1,31 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import FavoritesTokens from "./components/FavoritesTokens";
 import useTokens from "./hooks/useTokens";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import styled from "styled-components";
+import { Route, Routes, useLocation } from "react-router-dom";
 
 import Home from "./views/Home";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Header = styled.header`
 	width: 100%;
+	margin-bottom: 2rem;
 `;
 const Nav = styled.nav`
 	display: flex;
 	color: white;
 	width: 100%;
-	justify-content: space-between;
+	flex-wrap: wrap;
+	justify-content: space-around;
 	align-items: center;
+	align-content: center;
+	row-gap: 1rem;
 	font-size: 2rem;
 `;
 
 const Logo = styled.h1`
-	font-size: 1.2rem;
+	font-size: 1.5rem;
+	font-weight: 800;
 
 	@media (min-width: 570px) {
 		font-size: 2rem;
@@ -28,7 +34,7 @@ const Logo = styled.h1`
 
 const Button = styled.button`
 	font-weight: bold;
-	padding: 10px;
+	padding: 0.8rem;
 	background-color: rgba(53, 240, 208, 1);
 	box-shadow: 0 0 0 3px rgba(53, 240, 208, 0.5);
 	font-size: 1rem;
@@ -45,54 +51,81 @@ const Button = styled.button`
 		font-size: 1.5rem;
 	}
 `;
+const ContainerLink = styled.div`
+	padding: 0.5rem;
+	border-radius: 1.2rem;
+	width: auto;
+	border: 0.1rem #4c249f solid;
+	display: flex;
+	justify-content: center;
+	transition: border-color 1s ease;
+	&:hover {
+		border-color: #2dfdf0;
+	}
 
-function App() {
+	a {
+		display: inline-block;
+		background: linear-gradient(#f5d033, #2dfdf0);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+		padding-left: 1rem;
+		padding-right: 1rem;
+		width: 100%;
+		text-align: center;
+		font-weight: bold;
+		font-size: 1.4rem;
+		text-decoration: none;
+		border-radius: 1.2rem;
+		cursor: pointer;
+		@media (min-width: 570px) {
+			width: 10rem;
+		}
+	}
+`;
+
+function App(props) {
 	const [favoritesTokens, setFavoritesTokens] = useState([]);
 	const [updateFavorites, setUpdateFavorites] = useState(0);
-	const [token, setToken] = useState({});
 	const [, SelectCripto, selectOption] = useTokens();
 
-	useEffect(() => {
-		setInterval(() => {
-			setUpdateFavorites((count) => count + 1);
-		}, 30000);
-	}, []);
-
+	const { pathname } = useLocation();
 	return (
 		<>
 			<Header>
 				<Nav>
 					<Logo>CriptoApp</Logo>
+
+					<ContainerLink>
+						{pathname === "/favoritos" && <Link to="/">Inicio</Link>}
+						{pathname === "/" && <Link to="/favoritos">favoritos</Link>}
+					</ContainerLink>
 					<Button>Conectar Wallet</Button>
 				</Nav>
 			</Header>
-			<BrowserRouter>
-				<Routes>
-					<Route
-						path="/"
-						element={
-							<Home
-								setFavoritesTokens={setFavoritesTokens}
-								favoritesTokens={favoritesTokens}
-								token={token}
-								setToken={setToken}
-								selectOption={selectOption}
-								SelectCripto={SelectCripto}
-							/>
-						}
-					/>
-					<Route
-						path="/favoritos"
-						element={
-							<FavoritesTokens
-								favoritesTokens={favoritesTokens}
-								setFavoritesTokens={setFavoritesTokens}
-								updateFavorites={updateFavorites}
-							/>
-						}
-					/>
-				</Routes>
-			</BrowserRouter>
+			<Routes>
+				<Route
+					path="/"
+					element={
+						<Home
+							setFavoritesTokens={setFavoritesTokens}
+							favoritesTokens={favoritesTokens}
+							selectOption={selectOption}
+							SelectCripto={SelectCripto}
+						/>
+					}
+				/>
+				<Route
+					path="/favoritos"
+					element={
+						<FavoritesTokens
+							favoritesTokens={favoritesTokens}
+							setFavoritesTokens={setFavoritesTokens}
+							updateFavorites={updateFavorites}
+						/>
+					}
+				/>
+			</Routes>
 		</>
 	);
 }

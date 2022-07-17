@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Modal from "react-modal";
-import { customStyles } from "../FetchApi/Modal";
 import ModalComponent from "./Modal";
 
 const Card = styled.div`
-	/* background-color: rgba(76, 36, 159, 0.7); */
+	background-color: rgba(76, 36, 159, 0.19);
 	/* border-radius: 2rem; */
 	box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.377);
 	color: white;
-	font-size: 2rem;
-	height: 25rem;
+	font-size: 2.5rem;
+	height: 27rem;
 	margin-top: 1rem;
 	width: 100%;
 	display: flex;
@@ -18,10 +16,21 @@ const Card = styled.div`
 	align-items: center;
 	flex-direction: column;
 	padding: 1rem;
-	background-color: #2266c3;
+	/* background-color: #2266c3; */
 	border: 0.2rem solid transparent;
+	transition: border-color 1s ease-in;
 	&:hover {
-		border-image: linear-gradient(to bottom, rgba(53, 240, 208, 0.8) 100%, #2266c3 100%) 1;
+		/* border-image: linear-gradient(to bottom, rgba(53, 240, 208, 0.8) 100%, #2266c3 100%) 1; */
+		border-color: #2dfdf0;
+	}
+	@media (min-width: 670px) {
+		min-width: auto;
+		max-width: 28rem;
+		/* width: auto; */
+		/* flex: 0 1 200px; */
+		/* min-width:300px; */
+		/* height: 27rem; */
+		margin: 1rem auto;
 	}
 `;
 const Span = styled.span`
@@ -39,8 +48,9 @@ const Span = styled.span`
 `;
 const H2Token = styled.h2`
 	text-align: center;
-	background: linear-gradient(#f5d033, #2dfdf0);
+	background: linear-gradient(#2266c3, #2dfdf0);
 	-webkit-background-clip: text;
+	background-clip: text;
 	color: transparent;
 `;
 const H3 = styled.h3`
@@ -65,12 +75,14 @@ const Button = styled.button`
 	}
 `;
 const Promedio = styled.p`
-	font-size: 1rem;
+	font-size: 1.5rem;
 	text-align: center;
 	margin-top: 1rem;
 `;
 const SpanAvarage = styled.span`
-	color: #4c249f;
+	/* color: #4c249f; */
+	color: black;
+	color: #d3fef7;
 	font-weight: bold;
 	display: block;
 	margin-top: 0.4rem;
@@ -81,7 +93,8 @@ const ContainerBtn = styled.div`
 	justify-content: space-evenly;
 `;
 const Btn = styled.button`
-	font-weight: small;
+	/* font-weight: small; */
+	font-family: "Jost", sans-serif;
 	padding: 0.5rem;
 	/* background-color: transparent; */
 	font-size: 1rem;
@@ -91,6 +104,7 @@ const Btn = styled.button`
 	border-top: 0.1rem rgba(53, 240, 208, 0.5) solid;
 	width: auto;
 	background-color: rgba(53, 240, 208, 0.5);
+	color: white;
 	color: ${(props) => props.borderColor};
 	transition: color 0.3s ease;
 	&:hover {
@@ -98,41 +112,44 @@ const Btn = styled.button`
 	}
 	&:disabled {
 		background-color: transparent;
-		color: #4c249f;
+		/* color: #4c249f; */
+		color: white;
 	}
 	@media (min-width: 570px) {
 		font-size: 1rem;
 	}
 `;
 
-const FormConfirmation = styled.form`
-	display: flex;
-	height: 100%;
-	flex-direction: column;
-	justify-content: space-evenly;
-`;
-
 const CardToken = (props) => {
 	const { token, setFavoritesTokens, deleteFavorite, favoritesTokens } = props;
 	// console.log(favoritesTokens);
 	const [modalIsOpen, setIsOpen] = useState(false);
+	const [msgModal, setMsgModal] = useState("");
 	const [average, setAverage] = useState(Number(token.price));
-	const handleFavorite = () => {
-		// console.log(favoriteTokens?.some((tkn) => tkn.selectOption.symbol === token.selectOption.symbol));
+	const handleFavorite = (e) => {
+		//verify limit tokens
+		setIsOpen(true);
+
+		if (!deleteFavorite.value && favoritesTokens?.length === 3) {
+			return setMsgModal("Solo puedes añadir hasta 3 favoritos");
+		}
 		//Verify that token not was added already
 		if (
 			favoritesTokens?.some((tkn) => tkn.selectOption.symbol === token.selectOption.symbol) &&
 			!deleteFavorite.value
-		)
-			if (deleteFavorite.value) {
-				// 	return;
-				//Delete a token
-				return setFavoritesTokens((tokens) => tokens.filter((tkn) => tkn !== token));
-			}
+		) {
+			setMsgModal("El token ya ha sido añadido");
+			return;
+		}
+		//Delete a token
+		if (deleteFavorite.value) {
+			return setFavoritesTokens((tokens) => tokens.filter((tkn) => tkn !== token));
+		}
 
 		//Add a token
 		if (!deleteFavorite.value && favoritesTokens?.length < 3) {
 			setFavoritesTokens((tokens) => {
+				setMsgModal("Token añadido a favoritos");
 				return [...tokens, token];
 			});
 		}
@@ -148,15 +165,8 @@ const CardToken = (props) => {
 
 	// if (Object.keys(token).length < 1) return;
 
-	function openModal() {
-		setIsOpen(true);
-	}
-
-	function closeModal() {
-		setIsOpen(false);
-	}
 	return (
-		<Card>
+		<Card className={`animate__animated  animate__bounceIn`}>
 			{token.price ? (
 				<>
 					<H2Token>{token.selectOption.symbol.substring(0, 7)}</H2Token>
@@ -164,7 +174,7 @@ const CardToken = (props) => {
 						Precio:{" "}
 						{deleteFavorite.value /* && !(Number(token.price) === Number(average)) */ ? (
 							<>
-								<Span colorPrice={Number(token.price) <= Number(average) ? " #9c0720 " : "#98ff96"}>
+								<Span colorPrice={Number(token.price) <= Number(average) ? " #fd1d1d " : "#98ff96"}>
 									{Number(token.price).toLocaleString("en-IN", {
 										style: "decimal",
 										minimumFractionDigits: 14,
@@ -199,7 +209,7 @@ const CardToken = (props) => {
 						</Promedio>
 					)}
 					<Button
-						disabled={favoritesTokens?.length === 3 ? true : false}
+						// disabled={favoritesTokens?.length === 3 ? true : false}
 						title="Solo puedes añadir hasta 3 tokens diferentes"
 						onClick={handleFavorite}
 					>
@@ -210,39 +220,29 @@ const CardToken = (props) => {
 							<Btn
 								// borderColor={"rgba(53, 240, 208, 1)"}
 								disabled={!(Number(token.price) <= Number(average))}
-								onClick={openModal}
+								onClick={() => setIsOpen(true)}
 							>
 								Comprar
 							</Btn>
 							<Btn
 								// borderColor={"rgba(53, 240, 208, 1)"}
 								disabled={!(Number(token.price) > Number(average))}
-								onClick={openModal}
+								onClick={() => setIsOpen(true)}
 							>
 								Vender
 							</Btn>
 						</ContainerBtn>
 					)}
-					<Modal
-						isOpen={modalIsOpen}
-						onRequestClose={closeModal}
-						overlayClassName="Overlay"
-						ariaHideApp={false}
-						style={customStyles}
-					>
-						{/* <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2> */}
-						<FormConfirmation>
-							<h2>¿Estás seguro de realizar esta acción?</h2>
-							<ContainerBtn>
-								<Btn backgroundColor={"#4c249f"} onClick={closeModal}>
-									Confirmar
-								</Btn>
-								<Btn backgroundColor={"rgba(53, 240, 208, 1)"} onClick={closeModal}>
-									Cancelar
-								</Btn>
-							</ContainerBtn>
-						</FormConfirmation>
-					</Modal>
+					<ModalComponent
+						modalIsOpen={modalIsOpen}
+						setIsOpen={setIsOpen}
+						infoModal={{
+							value: deleteFavorite.value,
+							numberFavorites: favoritesTokens?.length,
+							msg: msgModal,
+						}}
+						// whatShow={deleteFavorite}
+					></ModalComponent>
 				</>
 			) : (
 				<p>Selecciona un token</p>
