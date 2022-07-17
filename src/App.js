@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-import CardToken from "./components/CardToken";
 import FavoritesTokens from "./components/FavoritesTokens";
-import { getTokenByAddress } from "./FetchApi/GetData";
 import useTokens from "./hooks/useTokens";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import styled from "styled-components";
+
+import Home from "./views/Home";
 
 const Header = styled.header`
 	width: 100%;
@@ -44,56 +45,19 @@ const Button = styled.button`
 		font-size: 1.5rem;
 	}
 `;
-const MainContainer = styled.div`
-	display: block;
-	margin-top: 2rem;
-	@media (min-width: 570px) {
-		display: flex;
-		align-items: flex-start;
-		justify-content: space-between;
-	}
-`;
-const SeLectionToken = styled.section`
-	display: flex;
-	width: 100%;
-	margin-top: 1rem;
-	flex-direction: column;
-	align-items: flex-start;
-	justify-content: center;
-	@media (min-width: 570px) {
-		width: 40%;
-	}
-`;
-const Favoritos = styled.section`
-	margin-top: 1rem;
-	height: auto;
-	@media (min-width: 570px) {
-		width: 50%;
-	}
-`;
-const Title = styled.h3`
-	color: #fff;
-	text-transform: uppercase;
-	font-weight: bold;
-	font-size: 1rem;
-	display: block;
-	margin-bottom: 1rem;
-`;
+
 function App() {
-	const [, SelectCripto, selectOption] = useTokens();
-	const [token, setToken] = useState({});
-	useEffect(() => {
-		if (selectOption.address !== "" && selectOption.symbol !== "") {
-			getTokenByAddress(selectOption.address, selectOption.symbol).then(setToken);
-		}
-	}, [selectOption]);
-	const [favoritesTokens, setFavoriteTokens] = useState([]);
+	const [favoritesTokens, setFavoritesTokens] = useState([]);
 	const [updateFavorites, setUpdateFavorites] = useState(0);
+	const [token, setToken] = useState({});
+	const [, SelectCripto, selectOption] = useTokens();
+
 	useEffect(() => {
 		setInterval(() => {
 			setUpdateFavorites((count) => count + 1);
 		}, 30000);
 	}, []);
+
 	return (
 		<>
 			<Header>
@@ -102,25 +66,33 @@ function App() {
 					<Button>Conectar Wallet</Button>
 				</Nav>
 			</Header>
-			<MainContainer>
-				<SeLectionToken>
-					<SelectCripto />
-					<CardToken
-						token={{ ...token, selectOption }}
-						setFavoriteTokens={setFavoriteTokens}
-						favoriteTokens={favoritesTokens}
-						deleteFavorite={{ value: false, msg: "Añadir a favorito" }}
+			<BrowserRouter>
+				<Routes>
+					<Route
+						path="/"
+						element={
+							<Home
+								setFavoritesTokens={setFavoritesTokens}
+								favoritesTokens={favoritesTokens}
+								token={token}
+								setToken={setToken}
+								selectOption={selectOption}
+								SelectCripto={SelectCripto}
+							/>
+						}
 					/>
-				</SeLectionToken>
-				<Favoritos>
-					<Title>Favoritos</Title>
-					<FavoritesTokens
-						favoritesTokens={favoritesTokens}
-						setFavoriteTokens={setFavoriteTokens}
-						updateFavorites={updateFavorites}
+					<Route
+						path="/favoritos"
+						element={
+							<FavoritesTokens
+								favoritesTokens={favoritesTokens}
+								setFavoritesTokens={setFavoritesTokens}
+								updateFavorites={updateFavorites}
+							/>
+						}
 					/>
-				</Favoritos>
-			</MainContainer>
+				</Routes>
+			</BrowserRouter>
 		</>
 	);
 }

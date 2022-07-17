@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Modal from "react-modal";
 import { customStyles } from "../FetchApi/Modal";
+import ModalComponent from "./Modal";
 
 const Card = styled.div`
 	/* background-color: rgba(76, 36, 159, 0.7); */
@@ -28,12 +29,19 @@ const Span = styled.span`
 	padding: 0.4rem;
 	color: ${(props) => props.colorPrice};
 	font-size: 1.1rem;
+
 	@media (min-width: 580px) {
 		font-size: 1.3rem;
 	}
 	@media (min-width: 610px) {
 		font-size: 1.5rem;
 	}
+`;
+const H2Token = styled.h2`
+	text-align: center;
+	background: linear-gradient(#f5d033, #2dfdf0);
+	-webkit-background-clip: text;
+	color: transparent;
 `;
 const H3 = styled.h3`
 	font-size: 2rem;
@@ -105,29 +113,30 @@ const FormConfirmation = styled.form`
 `;
 
 const CardToken = (props) => {
-	const { token, setFavoriteTokens, deleteFavorite, favoriteTokens } = props;
+	const { token, setFavoritesTokens, deleteFavorite, favoritesTokens } = props;
+	// console.log(favoritesTokens);
 	const [modalIsOpen, setIsOpen] = useState(false);
 	const [average, setAverage] = useState(Number(token.price));
 	const handleFavorite = () => {
+		// console.log(favoriteTokens?.some((tkn) => tkn.selectOption.symbol === token.selectOption.symbol));
 		//Verify that token not was added already
 		if (
-			favoriteTokens?.some((tkn) => tkn.selectOption.symbol === token.selectOption.symbol) &&
+			favoritesTokens?.some((tkn) => tkn.selectOption.symbol === token.selectOption.symbol) &&
 			!deleteFavorite.value
 		)
-			return;
-		//Delete a token
-		if (deleteFavorite.value) {
-			return setFavoriteTokens((tokens) => tokens.filter((tkn) => tkn !== token));
-		}
+			if (deleteFavorite.value) {
+				// 	return;
+				//Delete a token
+				return setFavoritesTokens((tokens) => tokens.filter((tkn) => tkn !== token));
+			}
 
 		//Add a token
-		if (!deleteFavorite.value && favoriteTokens.length < 3) {
-			setFavoriteTokens((tokens) => {
+		if (!deleteFavorite.value && favoritesTokens?.length < 3) {
+			setFavoritesTokens((tokens) => {
 				return [...tokens, token];
 			});
 		}
 	};
-
 	useEffect(() => {
 		// if (isNaN(average)) return;
 		if (Object.keys(token).length > 0 && token?.lastPrices?.length === 5) {
@@ -150,29 +159,47 @@ const CardToken = (props) => {
 		<Card>
 			{token.price ? (
 				<>
-					<h2>{token.selectOption.symbol.substring(0, 7)}</h2>
+					<H2Token>{token.selectOption.symbol.substring(0, 7)}</H2Token>
 					<H3>
 						Precio:{" "}
 						{deleteFavorite.value /* && !(Number(token.price) === Number(average)) */ ? (
 							<>
 								<Span colorPrice={Number(token.price) <= Number(average) ? " #9c0720 " : "#98ff96"}>
-									{Number(token.price)}
+									{Number(token.price).toLocaleString("en-IN", {
+										style: "decimal",
+										minimumFractionDigits: 14,
+										currency: "INR",
+									})}
 								</Span>
 								DAI
 							</>
 						) : (
 							<>
-								<Span colorPrice={"white"}> {Number(token.price)} </Span>DAI
+								<Span colorPrice={"white"}>
+									{" "}
+									{Number(token.price).toLocaleString("en-IN", {
+										style: "decimal",
+										minimumFractionDigits: 14,
+									})}{" "}
+								</Span>
+								DAI
 							</>
 						)}
 					</H3>
 					{deleteFavorite.value && (
 						<Promedio>
-							Promedio úitimas 5 lecturas: <SpanAvarage>${average}</SpanAvarage>{" "}
+							Promedio úitimas 5 lecturas:{" "}
+							<SpanAvarage>
+								DAI{" "}
+								{Number(average).toLocaleString("en-IN", {
+									style: "decimal",
+									minimumFractionDigits: 14,
+								})}
+							</SpanAvarage>{" "}
 						</Promedio>
 					)}
 					<Button
-						disabled={favoriteTokens?.length === 3 ? true : false}
+						disabled={favoritesTokens?.length === 3 ? true : false}
 						title="Solo puedes añadir hasta 3 tokens diferentes"
 						onClick={handleFavorite}
 					>
@@ -202,7 +229,6 @@ const CardToken = (props) => {
 						overlayClassName="Overlay"
 						ariaHideApp={false}
 						style={customStyles}
-						contentLabel="Example Modal"
 					>
 						{/* <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2> */}
 						<FormConfirmation>
