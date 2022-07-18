@@ -43,7 +43,9 @@ const DivInput = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	&::last-child {
+	&:last-child {
+		flex-direction: row;
+		justify-content: space-around;
 		height: 5rem;
 	}
 `;
@@ -133,6 +135,7 @@ const FormRecharge = ({ setIsOpen, modalIsOpen }) => {
 							</DivInput>
 							<DivInput>
 								<Btn type="submit">Validar</Btn>
+								<Btn onClick={() => setIsOpen(false)}>Cerrar</Btn>
 							</DivInput>
 						</Form>
 					)}
