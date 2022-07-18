@@ -33,7 +33,6 @@ const FavoritesTokens = ({ favoritesTokens, setFavoritesTokens /* , updateFavori
 
 	useEffect(() => {
 		if (favoritesTokens.length > 0 && updateFavorites <= 5 && updateFavorites > 0) {
-			console.log(updateFavorites)
 			favoritesTokens.map((token) =>
 				getTokenByAddress(token.buyTokenAddress, token.symbol).then((tokenUpdate) =>
 					setFavoritesTokens((oldTokens) =>
