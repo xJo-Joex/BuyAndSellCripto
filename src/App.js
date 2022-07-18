@@ -6,6 +6,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./views/Home";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import FormRecharge from "./components/FormRecharge";
 
 const Header = styled.header`
 	width: 100%;
@@ -51,6 +52,27 @@ const Button = styled.button`
 		font-size: 1.5rem;
 	}
 `;
+const ContainerLogo = styled.div`
+	a {
+		display: inline-block;
+		color: white;
+		padding-left: 1rem;
+		padding-right: 1rem;
+		width: 100%;
+		text-align: center;
+		font-weight: bold;
+		font-size: 2.5rem;
+		text-decoration: none;
+		border-radius: 1.2rem;
+		cursor: pointer;
+		@media (min-width: 570px) {
+			width: 10rem;
+		}
+		&:hover {
+			border-color: #2dfdf0;
+		}
+	}
+`;
 const ContainerLink = styled.div`
 	padding: 0.5rem;
 	border-radius: 1.2rem;
@@ -58,6 +80,8 @@ const ContainerLink = styled.div`
 	border: 0.1rem #4c249f solid;
 	display: flex;
 	justify-content: center;
+	align-items: center;
+	column-gap: 1rem;
 	transition: border-color 1s ease;
 	&:hover {
 		border-color: #2dfdf0;
@@ -78,8 +102,18 @@ const ContainerLink = styled.div`
 		text-decoration: none;
 		border-radius: 1.2rem;
 		cursor: pointer;
+		transition: background-color 1s ease-in;
+		/* transition: color 2s ease-in; */
 		@media (min-width: 570px) {
 			width: 10rem;
+		}
+		&:hover {
+			color: #4c249f;
+			background: none;
+			-webkit-background-clip: none;
+			background-clip: none;
+			padding-left: 1rem;
+			background-color: #2dfdf0;
 		}
 	}
 `;
@@ -88,16 +122,22 @@ function App() {
 	const [favoritesTokens, setFavoritesTokens] = useState([]);
 	const [, SelectCripto, selectOption] = useTokens();
 	const { pathname } = useLocation();
-
+	const [modalIsOpen, setIsOpen] = useState(false);
 	return (
 		<>
 			<Header>
 				<Nav>
-					<Logo>CriptoApp</Logo>
+					<ContainerLogo>
+						<Link to="/">CriptoApp</Link>
+					</ContainerLogo>
 
 					<ContainerLink>
-						{pathname === "/favoritos" && <Link to="/">Inicio</Link>}
+						{(pathname === "/favoritos" || pathname === "/recargar") && <Link to="/">Inicio</Link>}
 						{pathname === "/" && <Link to="/favoritos">favoritos</Link>}
+						<Link to="/recargar" onClick={() => setIsOpen(true)}>
+							{" "}
+							Saldo $0.00
+						</Link>
 					</ContainerLink>
 					<Button>Conectar Wallet</Button>
 				</Nav>
@@ -123,6 +163,10 @@ function App() {
 							// updateFavorites={updateFavorites}
 						/>
 					}
+				/>
+				<Route
+					path="/recargar"
+					element={<FormRecharge modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />}
 				/>
 			</Routes>
 		</>
