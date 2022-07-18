@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getTokenByAddress } from "../FetchApi/GetData";
+import useTokens from "../hooks/useTokens";
 import CardToken from "./CardToken";
 
 const ContainerFavorites = styled.section`
@@ -17,9 +18,22 @@ const ContainerFavorites = styled.section`
 	}
 	/* background-color: white; */
 `;
-const FavoritesTokens = ({ favoritesTokens, setFavoritesTokens, updateFavorites }) => {
+
+const FavoritesTokens = ({ favoritesTokens, setFavoritesTokens /* , updateFavorites */ }) => {
+	// console.log(favoritesTokens);
+	const [updateFavorites, setUpdateFavorites] = useState(0);
 	useEffect(() => {
-		favoritesTokens.length > 0 &&
+		const timer = setInterval(() => {
+			if (favoritesTokens.length < 1) return () => clearInterval(timer);
+			console.log("hola");
+			setUpdateFavorites((count) => (count < 5 ? count + 1 : 0));
+		}, 30000);
+		return () => clearInterval(timer);
+	}, [favoritesTokens]);
+
+	useEffect(() => {
+		if (favoritesTokens.length > 0 && updateFavorites <= 5 && updateFavorites > 0) {
+			console.log(updateFavorites)
 			favoritesTokens.map((token) =>
 				getTokenByAddress(token.buyTokenAddress, token.symbol).then((tokenUpdate) =>
 					setFavoritesTokens((oldTokens) =>
@@ -39,8 +53,9 @@ const FavoritesTokens = ({ favoritesTokens, setFavoritesTokens, updateFavorites 
 					)
 				)
 			);
-		console.log(favoritesTokens);
+		}
 	}, [updateFavorites]);
+	if (favoritesTokens.length < 1) return;
 	return (
 		<>
 			<ContainerFavorites className="animate__animated animate__fadeIn animate__delay-1s ">

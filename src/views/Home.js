@@ -21,10 +21,9 @@ const Home = ({ setFavoritesTokens, favoritesTokens, SelectCripto, selectOption 
 
 	useEffect(() => {
 		if (selectOption.address !== "" && selectOption.symbol !== "") {
-			getTokenByAddress(selectOption.address, selectOption.symbol).then(setToken);
+			getTokenByAddress(selectOption.address, selectOption.symbol).then((token) => setToken(token));
 		}
 	}, [selectOption]);
-
 	return (
 		<>
 			<SeLectionToken className="animate__animated animate__fadeIn animate__delay-1s ">

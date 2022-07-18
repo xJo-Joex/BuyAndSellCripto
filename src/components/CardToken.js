@@ -120,10 +120,15 @@ const Btn = styled.button`
 	}
 `;
 
+const ParagraphNoFound = styled.p`
+	text-align: center;
+`;
+
 const CardToken = (props) => {
 	const { token, setFavoritesTokens, deleteFavorite, favoritesTokens } = props;
 	// console.log(favoritesTokens);
 	const [modalIsOpen, setIsOpen] = useState(false);
+
 	const [msgModal, setMsgModal] = useState("");
 	const [average, setAverage] = useState(Number(token.price));
 	const handleFavorite = (e) => {
@@ -164,20 +169,28 @@ const CardToken = (props) => {
 	// if (typeof token.average === "string") return null;
 
 	// if (Object.keys(token).length < 1) return;
-
 	return (
 		<Card className={`animate__animated  animate__bounceIn`}>
 			{token.price ? (
 				<>
-					<H2Token>{token.selectOption.symbol.substring(0, 7)}</H2Token>
+					<p></p>
+					<H2Token>{token.selectOption.symbol.substring(0, 7)} </H2Token>
 					<H3>
 						Precio:{" "}
 						{deleteFavorite.value /* && !(Number(token.price) === Number(average)) */ ? (
 							<>
-								<Span colorPrice={Number(token.price) <= Number(average) ? " #fd1d1d " : "#98ff96"}>
+								<Span
+									colorPrice={
+										Number(token.price) === Number(average)
+											? " white "
+											: Number(token.price) <= Number(average)
+											? "#fd1d1d"
+											: "#98ff96"
+									}
+								>
 									{Number(token.price).toLocaleString("en-IN", {
 										style: "decimal",
-										minimumFractionDigits: 14,
+										minimumFractionDigits: 18,
 										currency: "INR",
 									})}
 								</Span>
@@ -203,7 +216,7 @@ const CardToken = (props) => {
 								DAI{" "}
 								{Number(average).toLocaleString("en-IN", {
 									style: "decimal",
-									minimumFractionDigits: 14,
+									minimumFractionDigits: 18,
 								})}
 							</SpanAvarage>{" "}
 						</Promedio>
@@ -244,8 +257,12 @@ const CardToken = (props) => {
 						// whatShow={deleteFavorite}
 					></ModalComponent>
 				</>
+			) : token.code === 100 ? (
+				<ParagraphNoFound>
+					:( Lo sentimos este Token no esta disponible en este momento
+				</ParagraphNoFound>
 			) : (
-				<p>Selecciona un token</p>
+				<ParagraphNoFound>Selecciona un token</ParagraphNoFound>
 			)}
 		</Card>
 	);

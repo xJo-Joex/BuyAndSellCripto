@@ -84,12 +84,11 @@ const ContainerLink = styled.div`
 	}
 `;
 
-function App(props) {
+function App() {
 	const [favoritesTokens, setFavoritesTokens] = useState([]);
-	const [updateFavorites, setUpdateFavorites] = useState(0);
 	const [, SelectCripto, selectOption] = useTokens();
-
 	const { pathname } = useLocation();
+
 	return (
 		<>
 			<Header>
@@ -121,7 +120,7 @@ function App(props) {
 						<FavoritesTokens
 							favoritesTokens={favoritesTokens}
 							setFavoritesTokens={setFavoritesTokens}
-							updateFavorites={updateFavorites}
+							// updateFavorites={updateFavorites}
 						/>
 					}
 				/>
