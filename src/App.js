@@ -123,6 +123,7 @@ function App() {
 	const [, SelectCripto, selectOption] = useTokens();
 	const { pathname } = useLocation();
 	const [modalIsOpen, setIsOpen] = useState(false);
+	const [balance, setBalance] = useState(0);
 	return (
 		<>
 			<Header>
@@ -136,7 +137,7 @@ function App() {
 						{pathname === "/" && <Link to="/favoritos">favoritos</Link>}
 						<Link to="/recargar" onClick={() => setIsOpen(true)}>
 							{" "}
-							Saldo $0.00
+							Saldo {balance.toFixed(2)}
 						</Link>
 					</ContainerLink>
 					<Button>Conectar Wallet</Button>
@@ -166,7 +167,9 @@ function App() {
 				/>
 				<Route
 					path="/recargar"
-					element={<FormRecharge modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} />}
+					element={
+						<FormRecharge modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} setBalance={setBalance} />
+					}
 				/>
 			</Routes>
 		</>

@@ -56,3 +56,6 @@ form .mounth-cvc {
 	justify-content: space-between;
 	align-items: flex-start;
 }
+.bnt-recargar {
+	/* width:100%!important; */
+}
