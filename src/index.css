@@ -42,3 +42,17 @@ body {
 .numberTarget {
 	letter-spacing: 0.8rem;
 }
+
+.mounth-cvc input {
+	padding: 8px 10px;
+	margin: 8px 0;
+}
+form .mounth-cvc {
+	flex-direction: column !important;
+	justify-content: flex-start !important;
+}
+.container-input {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+}

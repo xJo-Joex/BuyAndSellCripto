@@ -51,7 +51,7 @@ const DivInput = styled.div`
 `;
 
 const Label = styled.label`
-	margin-top: 1rem;
+	/* margin-top: 1rem; */
 	align-self: flex-start;
 `;
 const Labelerror = styled.div`
@@ -84,11 +84,21 @@ const FormRecharge = ({ setIsOpen, modalIsOpen }) => {
 			.matches(/^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]{1,50}$/, "Digite al menos dos nombres válidos")
 			.required("Este es un campo requerido"),
 		numbertarget: Yup.string()
-			.matches(/^[4-9]{1}[2-9]{1}[0-9]{1}[0-9]{13}$/, "No se aceptan tarjetas de débito")
+			.matches(
+				/(^4{1}2{1}\d{1}[1-9]{1}\d{12}$)|(^[4-9]{1}[3-9]{1}\d{14}$)/,
+				"16 dígitos y no se aceptan tarjetas de débito "
+			)
 			.required("Este campo es requerido"),
 		cvc: Yup.string()
 			.matches(/^[0-9]{3}$/, "El código debe ser de 3 digitos")
 			.required("cvc es un campo requerido"),
+		mounth: Yup.string()
+			.matches(
+				/^((0[7-9]{1})|10|11|12)\/(22)|(((0[1-9]{1})|10|11|12)\/([3-9]{1}[0-9]{1})|[2-9]{1,2})$/,
+				"Fecha inválida"
+			)
+			// .min(new Date(), "Fecha incorrecta")
+			.required("Campo requerido"),
 	});
 	return (
 		<Modal
@@ -105,6 +115,7 @@ const FormRecharge = ({ setIsOpen, modalIsOpen }) => {
 						username: "",
 						numbertarget: "",
 						cvc: "",
+						mounth: "",
 					}}
 					validationSchema={DisplayingErrorMessagesSchema}
 					onSubmit={(values) => {
@@ -128,11 +139,18 @@ const FormRecharge = ({ setIsOpen, modalIsOpen }) => {
 								)}
 							</DivInput>
 
-							<DivInput>
-								<Label>CVC: </Label>
-								<Field name="cvc" className="inputFormik" />
-								{touched.cvc && errors.cvc && <Labelerror>{errors.cvc}</Labelerror>}
-							</DivInput>
+							<div className="container-input">
+								<DivInput className="mounth-cvc">
+									<Label>MM/AA: </Label>
+									<Field name="mounth" title="fecha mala" className="inputFormi" />
+									{touched.mounth && errors.mounth && <Labelerror>{errors.mounth}</Labelerror>}
+								</DivInput>
+								<DivInput className="mounth-cvc">
+									<Label>CVC: </Label>
+									<Field name="cvc" className="inputFormik " />
+									{touched.cvc && errors.cvc && <Labelerror>{errors.cvc}</Labelerror>}
+								</DivInput>
+							</div>
 							<DivInput>
 								<Btn type="submit">Validar</Btn>
 								<Btn onClick={() => setIsOpen(false)}>Cerrar</Btn>
